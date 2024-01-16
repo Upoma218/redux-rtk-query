@@ -1,11 +1,34 @@
-import { TTodo, removeTodo, toggleComplete } from "@/redux/features/todoSlice";
+import { TTodo, removeTodo } from "@/redux/features/todoSlice";
 import { Button } from "../ui/button";
-import { useAppDispatch } from "@/redux/hook";
+import { useUpdateTodoMutation } from "@/redux/api/api";
 
-const TodoCard = ({ title, description, id, isCompleted, priority }: TTodo) => {
-  const dispatch = useAppDispatch();
+const TodoCard = ({
+  _id,
+  title,
+  description,
+  isCompleted,
+  priority,
+}: TTodo) => {
+  // const dispatch = useAppDispatch() //for local state mangement
+
+  const [updateTodo, { isLoading }] = useUpdateTodoMutation();
+
   const toggleState = () => {
-    dispatch(toggleComplete(id));
+    // dispatch(toggleComplete(id)); //for local state management
+
+    const taskData = {
+      title,
+      description,
+      priority,
+      isCompleted: !isCompleted,
+    };
+
+    const options = {
+      id: _id,
+      data: taskData
+    };
+
+    updateTodo(options);
   };
 
   return (
@@ -22,12 +45,14 @@ const TodoCard = ({ title, description, id, isCompleted, priority }: TTodo) => {
         <div className="grid grid-cols-4 gap-6 items-center">
           <p className="font-bold align-middle">{title}</p>
           <div className="flex gap-2 items-center">
-            <div className={`
+            <div
+              className={`
             size-3 rounded-full
-            ${priority==="High" ? "bg-red-500" : null}
-            ${priority==="Medium" ? "bg-yellow-500" : null}
-            ${priority==="Low" ? "bg-green-500" : null}
-            `} ></div>
+            ${priority === "High" ? "bg-red-500" : null}
+            ${priority === "Medium" ? "bg-yellow-500" : null}
+            ${priority === "Low" ? "bg-green-500" : null}
+            `}
+            ></div>
             <p className="font-bold align-middle">{priority}</p>
           </div>
           <p className="align-middle">{description}</p>
