@@ -1,34 +1,30 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useAppDispatch, /* useAppSelector  */} from "@/redux/hook";
 import AddTodoModal from "./AddTodoModal";
 import TodoCard from "./TodoCard";
 import TodoFilter from "./TodoFilter";
-import { TTodo, filterTodo } from "@/redux/features/todoSlice";
+import { TTodo } from "@/redux/features/todoSlice";
 import { useGetTodosQuery } from "@/redux/api/api";
+import { useState } from "react";
 
 const TodoContainer = () => {
+
+  const [priority, setPriority] = useState('');
   // From local store
   // const { todos } = useAppSelector((state) => state.todos);
 
   // From server store
-  const {data : todos, isLoading, error} = useGetTodosQuery(undefined)
-  const dispatch = useAppDispatch();
-
+  const {data : todos, isLoading, isError} = useGetTodosQuery(priority);
 
   if(isLoading){
     return <p>Loading . . . </p>
   }
 
 
-  const handleFilter = (priority: string) => {
-    dispatch(filterTodo(priority));
-  };
-
   return (
     <div>
       <div className="flex justify-between my-4">
         <AddTodoModal></AddTodoModal>
-        <TodoFilter onFilter={handleFilter} ></TodoFilter>
+      <TodoFilter priority = {priority} setPriority= {setPriority} ></TodoFilter>
       </div>
       <div className="bg-primary-gradient w-full h-full rounded-xl p-5 space-y-1">
         <div className="w-full h-full rounded-xl space-y-1">
@@ -41,7 +37,6 @@ const TodoContainer = () => {
               <div className="grid grid-cols-4 gap-4 items-center">
                 <p className="font-bold align-middle">Task Name</p>
                 <p className="font-bold align-middle">Priority</p>
-                {/* <p>Time</p> */}
                 <p className="align-middle">Task Details</p>
                 <p className="font-bold align-middle">Status</p>
               </div>

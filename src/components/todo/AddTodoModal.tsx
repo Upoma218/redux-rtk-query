@@ -10,8 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { addTodo } from "@/redux/features/todoSlice";
-import { useAppDispatch } from "@/redux/hook";
 import { FormEvent, useState } from "react";
 import {
   Select,
@@ -19,27 +17,44 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { SelectGroup, SelectTrigger, SelectValue } from "@radix-ui/react-select";
+import { useAddTodoMutation } from "@/redux/api/api";
 
 const AddTodoModal = () => {
   const [task, setTask] = useState("");
   const [description, setDescription] = useState("");
-  const [priority, setPriority] = useState("Medium");
+  const [priority, setPriority] = useState("");
 
-  const dispatch = useAppDispatch();
+
+  //! for local state management
+  // const dispatch = useAppDispatch();
+
+
+  // for server
+  const [addTodo, { data, isLoading, isError, isSuccess}] = useAddTodoMutation();
+  console.log({ data, isLoading, isError, isSuccess})
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    const randomString = Math.random().toString(36).substring(2, 9);
+    // const randomString = Math.random().toString(36).substring(2, 9);
 
     const taskDetails = {
-      id: randomString,
       title: task,
       description: description,
+      isCompleted: false,
       priority: priority,
     };
-    console.log(taskDetails)
-    dispatch(addTodo(taskDetails));
+
+
+    console.log("inside modal", taskDetails)
+
+    // for local state management
+    // console.log(taskDetails)
+    // dispatch(addTodo(taskDetails));
+
+
+    // for server
+    addTodo(taskDetails)
   };
 
   return (
@@ -88,7 +103,7 @@ const AddTodoModal = () => {
                 Priority Level
               </Label>
               <Select onValueChange={(value) => setPriority(value)}>
-                <SelectTrigger className="w-[280px] text-left border boder-1 p-2 rounded-md bg-sky-100">
+                <SelectTrigger className="col-span-3 text-left border boder-1 p-2 rounded-md">
                   <SelectValue placeholder="Priority Level" />
                 </SelectTrigger>
                 <SelectContent >

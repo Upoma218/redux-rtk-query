@@ -44,12 +44,9 @@ const todoSLice = createSlice({
       // Update the state with the reordered tasks
       state.todos = reorderedTodos;
     },
-    filterTodo: (state, action: PayloadAction<string>) => {
-        state.todos = state.todos.filter((item) => item.priority === action.payload);
-      },
   },
 });
 
-export const { addTodo, removeTodo, toggleComplete, filterTodo } = todoSLice.actions;
+export const { addTodo, removeTodo, toggleComplete } = todoSLice.actions;
 
 export default todoSLice.reducer;

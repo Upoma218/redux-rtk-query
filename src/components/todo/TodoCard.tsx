@@ -2,25 +2,42 @@ import { TTodo, removeTodo, toggleComplete } from "@/redux/features/todoSlice";
 import { Button } from "../ui/button";
 import { useAppDispatch } from "@/redux/hook";
 
-const TodoCard = ({ title, description, id, isCompleted,  priority }: TTodo) => {
-
+const TodoCard = ({ title, description, id, isCompleted, priority }: TTodo) => {
   const dispatch = useAppDispatch();
   const toggleState = () => {
-    dispatch(toggleComplete(id))
-  }
+    dispatch(toggleComplete(id));
+  };
 
   return (
     <div className="bg-white rounded-lg p-5 grid grid-cols-12 gap-6 items-center shadow-inner shadow-zinc-400">
       <div className="col-span-2">
-        <input onChange={toggleState} type="checkbox" name="status" id="status" />
+        <input
+          onChange={toggleState}
+          type="checkbox"
+          name="status"
+          id="status"
+        />
       </div>
       <div className="col-span-8">
         <div className="grid grid-cols-4 gap-6 items-center">
-          {/* <p>Time</p> */}
           <p className="font-bold align-middle">{title}</p>
-          <p className="font-bold align-middle">{priority}</p>
+          <div className="flex gap-2 items-center">
+            <div className={`
+            size-3 rounded-full
+            ${priority==="High" ? "bg-red-500" : null}
+            ${priority==="Medium" ? "bg-yellow-500" : null}
+            ${priority==="Low" ? "bg-green-500" : null}
+            `} ></div>
+            <p className="font-bold align-middle">{priority}</p>
+          </div>
           <p className="align-middle">{description}</p>
-          <p>{isCompleted ? <span className="text-green-700">Done</span> : <span className="text-red-700">Pending</span>}</p>
+          <p>
+            {isCompleted ? (
+              <span className="text-green-700">Done</span>
+            ) : (
+              <span className="text-red-700">Pending</span>
+            )}
+          </p>
         </div>
       </div>
       <div className="col-span-2 items-center">
