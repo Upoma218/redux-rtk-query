@@ -1,6 +1,6 @@
-import { TTodo, removeTodo } from "@/redux/features/todoSlice";
+import { TTodo } from "@/redux/features/todoSlice";
 import { Button } from "../ui/button";
-import { useUpdateTodoMutation } from "@/redux/api/api";
+import { useDeleteTodoMutation, useUpdateTodoMutation } from "@/redux/api/api";
 
 const TodoCard = ({
   _id,
@@ -12,6 +12,7 @@ const TodoCard = ({
   // const dispatch = useAppDispatch() //for local state mangement
 
   const [updateTodo, { isLoading }] = useUpdateTodoMutation();
+  const [deleteTodo] = useDeleteTodoMutation();
 
   const toggleState = () => {
     // dispatch(toggleComplete(id)); //for local state management
@@ -30,6 +31,24 @@ const TodoCard = ({
 
     updateTodo(options);
   };
+  const deleteState = () => {
+    // dispatch(toggleComplete(id)); //for local state management
+
+    const taskData = {
+      title,
+      description,
+      priority,
+      isCompleted: !isCompleted,
+    };
+
+    const options = {
+      id: _id,
+      data: taskData
+    };
+
+    deleteTodo(options);
+  };
+ 
 
   return (
     <div className="bg-white rounded-lg p-5 grid grid-cols-12 gap-6 items-center shadow-inner shadow-zinc-400">
@@ -68,7 +87,7 @@ const TodoCard = ({
       <div className="col-span-2 items-center">
         <div className="grid grid-cols-2 gap-4">
           <Button
-            onClick={() => dispatch(removeTodo(id))}
+            onClick={() => deleteState(_id)}
             className="bg-red-600"
           >
             <svg
