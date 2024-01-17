@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,7 +12,7 @@ import {
 
 
 
-const TodoFilter = ({priority, setPriority }) => {
+const TodoFilter = ({priority, setPriority }: any) => {
 
  
 

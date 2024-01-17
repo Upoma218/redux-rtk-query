@@ -14,6 +14,7 @@ const TodoContainer = () => {
 
   // From server store
   const {data : todos, isLoading, isError} = useGetTodosQuery(priority);
+ 
 
   if(isLoading){
     return <p>Loading . . . </p>
@@ -42,7 +43,7 @@ const TodoContainer = () => {
               </div>
             </div>
             <div className="col-span-2 items-center font-bold">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="flex gap-4">
               <p>Delete</p>
               <p>Update</p>
               </div>
